@@ -4,7 +4,7 @@
     "repeat": ["Crash Type", "Road User", "Age_Group", "Dayweek"],
     "columns": 2,
     "spec": {
-        "data": {"url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2/main/Data/Crash_Data.csv"},
+        "data": {"url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2_KIM/main/Data/Crash_Data.csv"},
         "width" : 150,
         "height" : 150,
         "mark": {"type" : "bar", "width" : 20},

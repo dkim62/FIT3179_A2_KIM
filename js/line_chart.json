@@ -3,7 +3,7 @@
   "background" : "rgb(240,240,240)",
   "width" : 500,
   "height" : 500,
-  "data": {"url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2/main/Data/Crash_Data.csv"},
+  "data": {"url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2_KIM/main/Data/Crash_Data.csv"},
   "transform": [{
     "calculate": "datetime(datum.Year + '-' + datum.Month)", "as" : "date"
   },{
