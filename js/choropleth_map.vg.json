@@ -44,73 +44,44 @@
         "center": { "expr": "center_to" },
         "scale": { "expr": "zoom_level"}
     },
-    "layer" : [ {
-        "data": {
-            "url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2/main/js/STE11aAust.json",
-            "format": { "type": "topojson", "feature": "STE11aAust" }
-          },
-          "transform": [
-            {
-              "lookup": "properties.STATE_NAME",
-              "from": {
+    "data": {
+        "url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2_KIM/main/Data/Crash_Data.csv"
+    },
+    "transform": [
+        {
+            "lookup": "State",
+            "from": {
                 "data": {
-                  "url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2_KIM/main/Data/Crash_Data.csv"
+                    "url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2/main/js/STE11aAust.json",
+                    "format": { "type": "topojson", "feature": "STE11aAust" }
                 },
-                "key": "State"
-              },
-              "as" : "map"
+            "key": "properties.STATE_NAME"
             },
-            {"calculate": "0", "as" : "rate"}
-          ],
-          "mark": {"type": "geoshape", "fill" : "white", "stroke" : "rgb(240,240,240)"},
-          "encoding": {
-            "tooltip": [
-              {"field": "properties.STATE_NAME", "type": "nominal", "title" : "State"},
-              { "field": "rate", "type" : "quantitative", "format" : ".2f" }   
-            ]
-          }
-        },{
-            "data": {
-                "url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2_KIM/main/Data/Crash_Data.csv"
-            },
-            "transform": [
-                {
-                    "lookup": "National LGA Name 2017",
-                    "from": {
-                        "data": {
-                            "url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2/main/js/STE11aAust.json",
-                            "format": { "type": "topojson", "feature": "STE11aAust" }
-                        },
-                    "key": "properties.LGA_NAME17"
-                    },
-                    "as" : "geo"
-                },
-                {"joinaggregate" : [{"op" : "count", "field": "State", "as" : "total"}],"groupby": ["Year"]},    
-                {"filter" : "datum.Year == Year_selection"},
-                {"joinaggregate" : [{"op" : "count", "field": "State", "as" : "incidents"}],"groupby": ["State"]},
-                {"calculate": "datum.incidents/datum.total*100", "as" : "rate"}
-            ],
-            "mark": {
-                "type": "geoshape"
-            },
-            "encoding": {
-                "shape" : {
-                    "field" : "geo",
-                    "type" : "geojson"
-                },
-                "color" : {
-                    "field" : "rate",
-                    "type" : "quantitative",
-                    "title" : "Incident rate (%)",
-                    "scale" : {"domain" : [0, 2], "range" : ["rgb(255,255,255)","rgb(189,194,208)","rgb(84,98,135)","rgb(38,56,104)"]},
-                    "legend" : {"orient" : "bottom", "offset" : -100}
-                },
-                "tooltip": [
-                    { "field": "State", "type" : "nominal", "title" : "State" },
-                    { "field": "rate", "type" : "quantitative", "format" : ".2f" }
-            ]
-            }
-        }
-    ]
-    
+            "as" : "geo"
+        },
+        {"joinaggregate" : [{"op" : "count", "field": "State", "as" : "total"}],"groupby": ["Year"]},    
+        {"filter" : "datum.Year == Year_selection"},
+        {"joinaggregate" : [{"op" : "count", "field": "State", "as" : "incidents"}],"groupby": ["State"]},
+        {"calculate": "datum.incidents/datum.total*100", "as" : "rate"}
+    ],
+    "mark": {
+        "type": "geoshape"
+    },
+    "encoding": {
+        "shape" : {
+            "field" : "geo",
+            "type" : "geojson"
+        },
+        "color" : {
+            "field" : "rate",
+            "type" : "quantitative",
+            "title" : "Incident rate (%)",
+            "scale" : {"domain" : [0, 2], "range" : ["rgb(255,255,255)","rgb(189,194,208)","rgb(84,98,135)","rgb(38,56,104)"]},
+            "legend" : {"orient" : "bottom", "offset" : -100}
+        },
+        "tooltip": [
+            { "field": "State", "type" : "nominal", "title" : "State" },
+            { "field": "rate", "type" : "quantitative", "format" : ".2f" }
+        ]
+    }
 }
