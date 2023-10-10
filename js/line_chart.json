@@ -1,0 +1,44 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "background" : "rgb(240,240,240)",
+  "width" : 500,
+  "height" : 500,
+  "data": {"url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2/main/Data/Crash_Data.csv"},
+  "transform": [{
+    "calculate": "datetime(datum.Year + '-' + datum.Month)", "as" : "date"
+  },{
+    "aggregate": [{
+      "op" : "count",
+      "field": "date",
+      "as" : "count"
+    }],
+    "groupby": ["date","Road User"]
+  }],
+  "layer" : [{
+    "mark": {"type" : "bar", "opacity": 0.5},
+    "encoding": { 
+      "x": {"field": "date",
+      "axis": {
+        "labelExpr": "[timeFormat(datum.value, '%m') == '01' ? timeFormat(datum.value, '%Y') : '']",
+        "tickSize": 30,
+        "title" : "year"
+      }
+    },
+      "y": {"aggregate": "mean", "field": "count",  "sort" : {"field" : "mean"}, "title" : "Average crashes per month"},
+      "color" : { "field" : "Road User", "scale" : {"scheme" : "purples"}, "legend" : null},
+      "tooltip" : {"field" : "Road User", "type" : "nominal"}
+    }
+  },{
+    "mark" : {"type" : "line", "interpolate": "natural", "strokeWidth" : 4},
+    "encoding": { 
+      "x": {"field": "date",
+      "axis": {
+        "labelExpr": "[timeFormat(datum.value, '%m') == '01' ? timeFormat(datum.value, '%Y') : '']",
+        "tickSize": 30
+      }
+    },
+      "y": {"aggregate": "sum", "field": "count",  "sort" : {"field" : "mean"}},
+      "color" : {"value" : "rgb(57,74,116)"}
+    }
+  }]
+}

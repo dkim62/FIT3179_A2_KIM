@@ -1,0 +1,17 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "background" : "rgb(240,240,240)",
+    "repeat": ["Crash Type", "Road User", "Age_Group", "Dayweek"],
+    "columns": 2,
+    "spec": {
+        "data": {"url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2/main/Data/Crash_Data.csv"},
+        "width" : 150,
+        "height" : 150,
+        "mark": {"type" : "bar", "width" : 20},
+        "encoding": {
+            "x": {"field": {"repeat" :"repeat"}, "sort" : ["Monday", "Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]},
+            "y": {"aggregate": "count"},
+            "color": {"field": "Gender", "scale" : {"range" : ["rgb(38,56,104)","rgb(189,194,208)"]}, "legend" : {"orient" : "bottom"}}
+        }
+    }
+}

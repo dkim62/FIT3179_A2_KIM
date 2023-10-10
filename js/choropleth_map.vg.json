@@ -1,0 +1,116 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "background" : "rgb(240,240,240)",
+    "width": 500,
+    "height": 500,
+    "params": [
+        {
+            "name": "zoom_level",
+            "value": 700,
+            "bind": {
+                "input": "range",
+                "min": 700, 
+                "max": 2000,
+                "step": 100,
+                "name": "Zoom: "
+            }
+        },
+        {
+            "name": "center_to",
+            "value": [135, -27],
+            "bind": {
+                "input": "select",
+                "options": [
+                    [135, -27],
+                    [144.9, -37],
+                    [132, -19.5],
+                    [136, -30],
+                    [117, -25],
+                    [142,-20.9  ],
+                    [145,-31.8]
+                ],
+                "labels": ["Centre View", "Victoria", "Northern Territory", "South Australia", "Western Australia","Queensland", "New South Wales"],
+                "name": "Map Centre: "
+            }
+        },
+        {
+            "name": "Year_selection",
+            "value": 2021,
+            "bind": {"input": "range", "min": 2017, "max": 2021, "step": 1}
+        }
+    ],
+    "projection": {
+        "type": "equirectangular",
+        "center": { "expr": "center_to" },
+        "scale": { "expr": "zoom_level"}
+    },
+    "layer" : [ {
+        "data": {
+            "url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2/main/js/LGA_2017_AUST.json",
+            "format": { "type": "topojson", "feature": "LGA_2017_AUST" }
+          },
+          "transform": [
+            {
+              "lookup": "properties.LGA_NAME17",
+              "from": {
+                "data": {
+                  "url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2/main/Data/Crash_Data.csv"
+                },
+                "key": "National LGA Name 2017"
+              },
+              "as" : "map"
+            },
+            {"calculate": "0", "as" : "rate"}
+          ],
+          "mark": {"type": "geoshape", "fill" : "white", "stroke" : "rgb(240,240,240)"},
+          "encoding": {
+            "tooltip": [
+              {"field": "properties.LGA_NAME17", "type": "nominal", "title" : "National LGA Name"},
+              { "field": "rate", "type" : "quantitative", "format" : ".2f" }   
+            ]
+          }
+        },{
+            "data": {
+                "url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2/main/Data/Crash_Data.csv"
+            },
+            "transform": [
+                {
+                    "lookup": "National LGA Name 2017",
+                    "from": {
+                        "data": {
+                            "url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2/main/js/LGA_2017_AUST.json",
+                            "format": { "type": "topojson", "feature": "LGA_2017_AUST" }
+                        },
+                    "key": "properties.LGA_NAME17"
+                    },
+                    "as" : "geo"
+                },
+                {"joinaggregate" : [{"op" : "count", "field": "National LGA Name 2017", "as" : "total"}],"groupby": ["Year"]},    
+                {"filter" : "datum.Year == Year_selection"},
+                {"joinaggregate" : [{"op" : "count", "field": "National LGA Name 2017", "as" : "incidents"}],"groupby": ["National LGA Name 2017"]},
+                {"calculate": "datum.incidents/datum.total*100", "as" : "rate"}
+            ],
+            "mark": {
+                "type": "geoshape"
+            },
+            "encoding": {
+                "shape" : {
+                    "field" : "geo",
+                    "type" : "geojson"
+                },
+                "color" : {
+                    "field" : "rate",
+                    "type" : "quantitative",
+                    "title" : "Incident rate (%)",
+                    "scale" : {"domain" : [0, 2], "range" : ["rgb(255,255,255)","rgb(189,194,208)","rgb(84,98,135)","rgb(38,56,104)"]},
+                    "legend" : {"orient" : "bottom", "offset" : -100}
+                },
+                "tooltip": [
+                    { "field": "National LGA Name 2017", "type" : "nominal", "title" : "National LGA Name" },
+                    { "field": "rate", "type" : "quantitative", "format" : ".2f" }
+            ]
+            }
+        }
+    ]
+    
+}
