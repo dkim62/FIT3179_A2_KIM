@@ -78,7 +78,7 @@
                     "lookup": "National LGA Name 2017",
                     "from": {
                         "data": {
-                            "url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2/main/js/LGA_2017_AUST.json",
+                            "url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2_KIM/main/js/LGA_2017_AUST.json",
                             "format": { "type": "topojson", "feature": "LGA_2017_AUST" }
                         },
                     "key": "properties.LGA_NAME17"
