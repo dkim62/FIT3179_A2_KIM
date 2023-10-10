@@ -45,8 +45,8 @@
         "scale": { "expr": "zoom_level"}
     },
     "data": {
-        "url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2_KIM/main/js/STE11aAust.json",
-        "format": { "type": "topojson", "feature": "STE11aAust" }
+        "url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2_KIM/main/js/australian-states.json",
+        "format": { "type": "topojson", "feature": "australian-states" }
     },
     "transform": [
         {
