@@ -45,19 +45,19 @@
         "scale": { "expr": "zoom_level"}
     },
     "data": {
-        "url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2/main/js/STE11aAust.json",
+        "url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2_KIM/main/js/STE11aAust.json",
         "format": { "type": "topojson", "feature": "STE11aAust" }
     },
     "transform": [
         {
-            "lookup": "Properties.STATE_NAME",
+            "lookup": "properties.STATE_NAME",
             "from": {
                 "data": {
                     "url": "https://raw.githubusercontent.com/dkim62/FIT3179_A2_KIM/main/Data/Crash_Data.csv"
                 },
             "key": "State"
             },
-            "as" : "geo"
+            "as" : "geo"    
         },
         {"joinaggregate" : [{"op" : "count", "field": "State", "as" : "total"}],"groupby": ["Year"]},    
         {"filter" : "datum.Year == Year_selection"},
